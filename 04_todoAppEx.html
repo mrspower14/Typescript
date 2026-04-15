@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+</head>
+<body>
+    <input class="input" placeholder="입력" />
+    <button id="add">추가</button>
+    <button id="completed">완료</button>
+    <button id="remove">삭제</button>
+    <br>
+    <br>
+    <l1>📌 Todo List</l1>
+    <ul class="list"></ul>
+    <script>
+
+        class TodoApp {
+            todos = [];
+            nextId = 1;
+            
+            //할일 추가
+            addTodo(text) {
+                const todo = {
+                    id: this.nextId++,
+                    text,
+                    completed: false
+                }
+                this.todos.push(todo);
+            };
+            
+            //할 일 목록 출력
+            listTodos() {
+                this.todos.forEach((todo) => {
+                    console.log(`[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`);
+                })
+            }
+
+            //할 일 목록 웹에 출력 
+            listTodosWeb() {
+                //li.remove();
+                app.todos.forEach((todo) => {
+                    const li = document.createElement('li');
+                    li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
+                    list.appendChild(li);
+                })
+            }
+
+            //완료 처리 
+            toggleTodo(id) {
+                const todo = this.todos.find((t) => t.id == id);
+                if (todo) {
+                    todo.completed = !todo.completed;
+                }
+            }
+
+            //삭제 처리
+            removeTodo(id) {
+                this.todos = this.todos.filter((t) => t.id != id);
+            }
+        }
+
+        const input = document.querySelector('.input');
+        const btnAdd = document.querySelector('#add');
+        const btnCompleted = document.querySelector('#completed');
+        const btnRemove = document.querySelector('#remove');
+        const list = document.querySelector('.list');
+
+        const app = new TodoApp();
+        btnAdd.addEventListener('click', () => {
+            app.addTodo(input.value);
+
+            list.innerHTML = '';
+            // const li = document.createElement('li');
+            // //li.remove();
+            // app.todos.forEach((todo) => {
+            //     li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
+            //     list.appendChild(li);
+            // })
+            app.listTodosWeb();
+            input.value = '';
+            input.focus();
+        });
+
+        btnCompleted.addEventListener('click', () => {
+            app.toggleTodo(input.value);
+            
+            list.innerHTML = '';
+            // app.todos.forEach((todo) => {
+            //     const li = document.createElement('li');
+            //     li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
+            //     list.appendChild(li);
+            // })
+            app.listTodosWeb();
+            input.value = ''
+            input.focus();
+        });
+
+        btnRemove.addEventListener('click', () => {
+            app.removeTodo(input.value);
+
+            list.innerHTML = '';
+            // app.todos.forEach((todo) => {
+            //     const li = document.createElement('li');
+            //     li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
+            //     list.appendChild(li);
+            // })
+            app.listTodosWeb();
+            input.value = ''
+            input.focus();
+        })
+    </script>
+</body>
+</html>
