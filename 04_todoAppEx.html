@@ -30,7 +30,7 @@
                 this.todos.push(todo);
             };
             
-            //할 일 목록 출력
+            //할 일 목록 콘솔에 출력
             listTodos() {
                 this.todos.forEach((todo) => {
                     console.log(`[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`);
@@ -39,7 +39,9 @@
 
             //할 일 목록 웹에 출력 
             listTodosWeb() {
-                //li.remove();
+                const list = document.querySelector('.list');
+                list.innerHTML = '';
+
                 app.todos.forEach((todo) => {
                     const li = document.createElement('li');
                     li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
@@ -65,48 +67,37 @@
         const btnAdd = document.querySelector('#add');
         const btnCompleted = document.querySelector('#completed');
         const btnRemove = document.querySelector('#remove');
-        const list = document.querySelector('.list');
-
+        
         const app = new TodoApp();
         btnAdd.addEventListener('click', () => {
+            //할일 추가
             app.addTodo(input.value);
-
-            list.innerHTML = '';
-            // const li = document.createElement('li');
-            // //li.remove();
-            // app.todos.forEach((todo) => {
-            //     li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
-            //     list.appendChild(li);
-            // })
+            //화면에 보여주기
             app.listTodosWeb();
+
+            //input clear
             input.value = '';
             input.focus();
         });
 
         btnCompleted.addEventListener('click', () => {
+            //완료 처리
             app.toggleTodo(input.value);
-            
-            list.innerHTML = '';
-            // app.todos.forEach((todo) => {
-            //     const li = document.createElement('li');
-            //     li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
-            //     list.appendChild(li);
-            // })
+            //화면에 보여주기
             app.listTodosWeb();
+
+            //input clear
             input.value = ''
             input.focus();
         });
 
         btnRemove.addEventListener('click', () => {
+            //삭제 처리
             app.removeTodo(input.value);
-
-            list.innerHTML = '';
-            // app.todos.forEach((todo) => {
-            //     const li = document.createElement('li');
-            //     li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
-            //     list.appendChild(li);
-            // })
+            //화면에 보여주기
             app.listTodosWeb();
+
+            //input clear
             input.value = ''
             input.focus();
         })
