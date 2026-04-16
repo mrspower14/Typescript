@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+</head>
+<body>
+    <input class="input" placeholder="입력" />
+    <button id="add">추가</button>
+    <br>
+    <br>
+    <l1>📌 Todo List</l1>
+    <ul class="list"></ul>
+    <script>
+
+        class TodoApp {
+            todos = [];
+            nextId = 1;
+            
+            //할일 추가
+            addTodo(text) {
+                const todo = {
+                    id: this.nextId++,
+                    text,
+                    completed: false,
+                    remove: false
+                }
+                this.todos.push(todo);
+            };
+
+            //할 일 목록 웹에 출력 
+            listTodosWeb() {
+                const list = document.querySelector('.list');
+                list.innerHTML = '';
+
+                app.todos.forEach((todo) => {
+                    const li = document.createElement('li');
+                    const btnToggle = document.createElement('button');
+                    btnToggle.innerText = '완료';
+                    btnToggle.onclick = function(){
+                        todo.completed = !todo.completed;
+                        li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
+                        li.appendChild(btnToggle);
+                        li.appendChild(btnRemove);
+                    }
+                    const btnRemove = document.createElement('button');
+                    btnRemove.innerText = '삭제';
+                    btnRemove.onclick = function(){
+                        li.remove();
+                        todo.remove = true;
+                    }
+                    if (!todo.remove) {
+                        li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
+                        li.appendChild(btnToggle);
+                        li.appendChild(btnRemove);
+                        list.appendChild(li);
+                    }
+                })
+            }
+
+        }
+
+        const input = document.querySelector('.input');
+        const btnAdd = document.querySelector('#add');
+        
+        const app = new TodoApp();
+        btnAdd.addEventListener('click', () => {
+            //할일 추가
+            app.addTodo(input.value);
+            //화면에 보여주기
+            app.listTodosWeb();
+
+            //input clear
+            input.value = '';
+            input.focus();
+        });
+    </script>
+</body>
+</html>
