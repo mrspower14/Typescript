@@ -8,6 +8,8 @@
 <body>
     <input class="input" placeholder="입력" />
     <button id="add">추가</button>
+    <button id="completed">완료</button>
+    <button id="remove">삭제</button>
     <br>
     <br>
     <l1>📌 Todo List</l1>
@@ -36,35 +38,33 @@
 
                 app.todos.forEach((todo) => {
                     const li = document.createElement('li');
+                    const chk = document.createElement('input');
+                    chk.type = 'checkbox';
                     
-                    const btnToggle = document.createElement('button');
-                    btnToggle.innerText = '완료';
-                    btnToggle.onclick = function(){
-                        todo.completed = !todo.completed;
-                        li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
-                        li.appendChild(btnToggle);
-                        li.appendChild(btnRemove);
-                    }
-
-                    const btnRemove = document.createElement('button');
-                    btnRemove.innerText = '삭제';
-                    btnRemove.onclick = function(){
-                        li.remove();
-                        todo.remove = true;
-                    }
-                    if (!todo.remove) {
-                        li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
-                        li.appendChild(btnToggle);
-                        li.appendChild(btnRemove);
-                        list.appendChild(li);
-                    }
+                    li.textContent = `[${todo.completed ? '✓': ' '}] (${todo.id}) ${todo.text}`;
+                    li.appendChild(chk);
+                    list.appendChild(li);
                 })
             }
 
+            //완료 처리 
+            toggleTodo(id) {
+                const todo = this.todos.find((t) => t.id == id);
+                if (todo) {
+                    todo.completed = !todo.completed;
+                }
+            }
+
+            //삭제 처리
+            removeTodo(id) {
+                this.todos = this.todos.filter((t) => t.id != id);
+            }
         }
 
         const input = document.querySelector('.input');
         const btnAdd = document.querySelector('#add');
+        const btnCompleted = document.querySelector('#completed');
+        const btnRemove = document.querySelector('#remove');
         
         const app = new TodoApp();
         btnAdd.addEventListener('click', () => {
@@ -77,6 +77,28 @@
             input.value = '';
             input.focus();
         });
+
+        btnCompleted.addEventListener('click', () => {
+            //완료 처리
+            app.toggleTodo(input.value);
+            //화면에 보여주기
+            app.listTodosWeb();
+
+            //input clear
+            input.value = ''
+            input.focus();
+        });
+
+        btnRemove.addEventListener('click', () => {
+            //삭제 처리
+            app.removeTodo(input.value);
+            //화면에 보여주기
+            app.listTodosWeb();
+
+            //input clear
+            input.value = ''
+            input.focus();
+        })
     </script>
 </body>
 </html>
